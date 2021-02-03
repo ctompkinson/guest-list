@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "foo"
+  guest_list:
+    build: .
+    restart: on-failure
+    environment:
+      GUESTLIST_DB_USERNAME: "root"
+      GUESTLIST_DB_PASSWORD: "foo"
+      GUESTLIST_DB_NAME: "guestlist"
+      GUESTLIST_DB_ADDRESS: "db"
+      GUESTLIST_DB_PORT: "3306"
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    depends_on:
+      - db
